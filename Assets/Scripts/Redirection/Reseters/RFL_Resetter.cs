@@ -37,12 +37,16 @@ public class RFL_Resetter : Resetter {
                 InjectRotation(remainingRotation);
                 overallInjectedRotation += remainingRotation;
 
-                Vector3 movedVector = redirectionManager.trackedSpace.position - virtualCenter;
                 Room currentRoom = rtc.currentRoom;
-                Room nextRoom = (rtc.currentRoom.connectedResetPoints[rtc.minIndex]).GetNextRoom(rtc.currentRoom);
-                Vector3 expectedVector = (nextRoom).position - currentRoom.position;
-                GameObject.Find("Terrain").gameObject.transform.position = GameObject.Find("Terrain").gameObject.transform.position - (expectedVector - movedVector);
-                virtualCenter = redirectionManager.trackedSpace.position;
+                Room nextRoom = rtc.nextRoom;
+                ResetPoint rp = currentRoom.connectedResetPoints[rtc.minIndex];
+                
+                Vector3 expectedVector = nextRoom.position - currentRoom.position;
+                Vector3 movedVector = redirectionManager.trackedSpace.position - virtualCenter;
+                Vector3 flippedVector = (rp.position - currentRoom.position) * 2;
+
+                GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - movedVector;   // Resetting Error Fix
+                GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - flippedVector; // Reset Point Position Error Fix
 
                 redirectionManager.OnResetEnd();
             }

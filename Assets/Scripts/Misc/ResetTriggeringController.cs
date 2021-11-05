@@ -32,7 +32,6 @@ public class ResetTriggeringController : MonoBehaviour
         dirFlipper = 1f;
     }
 
-    // Update is called once per frame
     public void UpdateRTC()
     {
         distancesFromResets = new List<float>();
@@ -59,7 +58,7 @@ public class ResetTriggeringController : MonoBehaviour
             if(closestRelativePosition.z * direction.z > 0) watchingRP = true;
         }
 
-        if(distancesFromResets.Min() < 0.3 && !rm.inReset && watchingRP)
+        if(distancesFromResets.Min() < 0.2 && !rm.inReset && watchingRP)
         {
             GameObject.Find("TurnReadySign").GetComponent<Canvas>().enabled = true;
             nextRoom.MarkAsNext(true);
