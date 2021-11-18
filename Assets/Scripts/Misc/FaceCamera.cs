@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class FaceCamera : MonoBehaviour
 {
-    [HideInInspector] private Transform camera;
+    [HideInInspector] private Transform vrCamera;
 
     void Start()
     {
-        camera = GameObject.Find("VRCamera").transform;
+        vrCamera = GameObject.Find("VRCamera").transform;
     }
 
     void Update()
     {
-        transform.LookAt(new Vector3(camera.position.x, transform.position.y, camera.position.z), Vector3.up);
+        transform.LookAt(new Vector3(vrCamera.position.x, transform.position.y, vrCamera.position.z), Vector3.up);
     }
 }
