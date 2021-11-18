@@ -14,55 +14,40 @@ public class RedirectionManager : MonoBehaviour {
     [Tooltip("The game object that is being physically tracked (probably user's head)")]
     public Transform headTransform;
     
-    [HideInInspector]
-    public Transform body;
-    [HideInInspector]
-    public Transform duplicatedBody;
-    [HideInInspector]
-    public Transform trackedSpace;
+    [HideInInspector] public Transform body;
+    [HideInInspector] public Transform duplicatedBody;
+    [HideInInspector] public Transform trackedSpace;
 
-    [HideInInspector]
-    public Resetter resetter;
-    [HideInInspector]
-    public ResetTrigger resetTrigger;
-    [HideInInspector]
-    public SimulationManager simulationManager;
-    [HideInInspector]
-    public HeadFollower bodyHeadFollower;
-    [HideInInspector]
-    public ResetTriggeringController rtc;
+    [HideInInspector] public Resetter resetter;
+    [HideInInspector] public ResetTrigger resetTrigger;
+    [HideInInspector] public SimulationManager simulationManager;
+    [HideInInspector] public HeadFollower bodyHeadFollower;
+    [HideInInspector] public ResetTriggeringController rtc;
+    public BlockLoader blockLoader;
 
-    [HideInInspector]
-    public Vector3 currPos, currPosReal, prevPos, prevPosReal;
-    [HideInInspector]
-    public Vector3 currDir, currDirReal, prevDir, prevDirReal;
-    [HideInInspector]
-    public Vector3 deltaPos;
-    [HideInInspector]
-    public float deltaDir;
-    [HideInInspector]
-    public Transform targetWaypoint;
+    [HideInInspector] public Vector3 currPos, currPosReal, prevPos, prevPosReal;
+    [HideInInspector] public Vector3 currDir, currDirReal, prevDir, prevDirReal;
+    [HideInInspector] public Vector3 deltaPos;
+    [HideInInspector] public float deltaDir;
+    [HideInInspector] public Transform targetWaypoint;
 
 
-    [HideInInspector]
-    public bool inReset = false;
+    [HideInInspector] public bool inReset = false;
     
-    [HideInInspector]
-    public bool tilingMode = false;
+    [HideInInspector] public bool tilingMode = false;
 
-    [HideInInspector]
-    public bool controllerTriggered = false;
+    [HideInInspector] public bool controllerTriggered = false;
 
 
-
-    public Room startingRoom;
-    [HideInInspector]
-    public Room currentRoom;
+    [HideInInspector] public Room currentRoom;
 
 
     void Awake()
     {
-        currentRoom = startingRoom;
+        if(!blockLoader.LoadInfo()) Debug.Log("Failed Loading");
+        blockLoader.LoadBlocks();
+
+        currentRoom = blockLoader.startingRoom;
         currentRoom.MarkAsCurrent(true);
 
         body = transform.Find("Body");

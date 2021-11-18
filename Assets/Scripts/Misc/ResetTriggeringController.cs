@@ -39,7 +39,7 @@ public class ResetTriggeringController : MonoBehaviour
 
         for(int i = 0; i < currentRoom.connectedResetPoints.Count; i++)
         {
-            float distance = (currentRoom.connectedResetPoints[i].position - rm.currPosReal).magnitude;
+            float distance = (currentRoom.connectedResetPoints[i].transform.position - rm.currPosReal).magnitude;
             distancesFromResets.Add(distance);
         }
         minIndex = distancesFromResets.IndexOf(distancesFromResets.Min());
@@ -47,7 +47,7 @@ public class ResetTriggeringController : MonoBehaviour
         nextRoom = (currentRoom.connectedResetPoints[minIndex]).GetNextRoom(currentRoom);
 
         bool watchingRP = false;
-        Vector3 closestRelativePosition = currentRoom.connectedResetPoints[minIndex].position - currentRoom.position;
+        Vector3 closestRelativePosition = currentRoom.connectedResetPoints[minIndex].transform.position - currentRoom.transform.position;
         Vector3 direction = rm.currDirReal * dirFlipper;
         if(Mathf.Abs(closestRelativePosition.x) > Mathf.Abs(closestRelativePosition.z))
         {

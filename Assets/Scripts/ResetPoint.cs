@@ -5,15 +5,12 @@ using UnityEngine;
 public class ResetPoint : MonoBehaviour
 {
     [SerializeField] public List<Room> connectedRooms;
-    [HideInInspector] public Vector3 position;
 
-    void Awake()
+    void Initialize()
     {
         if(connectedRooms.Count != 2)
             Debug.Log("Error : Reset Point (" + this.gameObject.name + ") has invalid number of Rooms Connected");
-
-        position = transform.position;
-}
+    }
 
     public Room GetNextRoom(Room previousRoom)
     {

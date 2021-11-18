@@ -41,9 +41,9 @@ public class RFL_Resetter : Resetter {
                 Room nextRoom = rtc.nextRoom;
                 ResetPoint rp = currentRoom.connectedResetPoints[rtc.minIndex];
                 
-                Vector3 expectedVector = nextRoom.position - currentRoom.position;
+                Vector3 expectedVector = nextRoom.transform.position - currentRoom.transform.position;
                 Vector3 movedVector = redirectionManager.trackedSpace.position - virtualCenter;
-                Vector3 flippedVector = (rp.position - currentRoom.position) * 2;
+                Vector3 flippedVector = (rp.transform.position - currentRoom.transform.position) * 2;
 
                 GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - movedVector;   // Resetting Error Fix
                 GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - flippedVector; // Reset Point Position Error Fix

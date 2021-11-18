@@ -6,17 +6,15 @@ public class Room : MonoBehaviour
 {
     
     [SerializeField] public List<ResetPoint> connectedResetPoints;
-    [HideInInspector] public Vector3 position;
 
     public GameObject border_current;
     public GameObject border_next;
 
-    void Awake()
+    void Initialize()
     {
         if(connectedResetPoints.Count == 0)
             Debug.Log("Error : Room (" + this.gameObject.name + ") is missing Reset Point");
-
-        position = transform.position;
+            
     }
 
     public void SetAllResetPointsActive(bool enable)
