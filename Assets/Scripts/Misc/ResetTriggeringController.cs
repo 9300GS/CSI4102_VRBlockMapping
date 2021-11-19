@@ -12,6 +12,7 @@ public class ResetTriggeringController : MonoBehaviour
     RedirectionManager rm;
     public Room currentRoom;
     public Room nextRoom;
+    public ResetPoint closestResetPoint;
 
 
     [HideInInspector]
@@ -23,13 +24,9 @@ public class ResetTriggeringController : MonoBehaviour
     [HideInInspector]
     public int minIndex;
 
-    [HideInInspector]
-    public float dirFlipper;
-
     void Start()
     {
         rm = GameObject.Find("Redirected User").GetComponent<RedirectionManager>();
-        dirFlipper = 1f;
     }
 
     public void UpdateRTC()
@@ -39,16 +36,17 @@ public class ResetTriggeringController : MonoBehaviour
 
         for(int i = 0; i < currentRoom.connectedResetPoints.Count; i++)
         {
-            float distance = (currentRoom.connectedResetPoints[i].transform.position - rm.currPosReal).magnitude;
+            float distance = (currentRoom.connectedResetPoints[i].transform.position - rm.currPos).magnitude;
             distancesFromResets.Add(distance);
         }
         minIndex = distancesFromResets.IndexOf(distancesFromResets.Min());
-
-        nextRoom = (currentRoom.connectedResetPoints[minIndex]).GetNextRoom(currentRoom);
+        
+        closestResetPoint = currentRoom.connectedResetPoints[minIndex];
+        nextRoom = closestResetPoint.GetNextRoom(currentRoom);
 
         bool watchingRP = false;
-        Vector3 closestRelativePosition = currentRoom.connectedResetPoints[minIndex].transform.position - currentRoom.transform.position;
-        Vector3 direction = rm.currDirReal * dirFlipper;
+        Vector3 closestRelativePosition = closestResetPoint.transform.position - currentRoom.transform.position;
+        Vector3 direction = rm.currDir;
         if(Mathf.Abs(closestRelativePosition.x) > Mathf.Abs(closestRelativePosition.z))
         {
             if(closestRelativePosition.x * direction.x > 0) watchingRP = true;
@@ -58,7 +56,7 @@ public class ResetTriggeringController : MonoBehaviour
             if(closestRelativePosition.z * direction.z > 0) watchingRP = true;
         }
 
-        if(distancesFromResets.Min() < 0.2 && !rm.inReset && watchingRP)
+        if(distancesFromResets.Min() < 0.2f && !rm.inReset && watchingRP)
         {
             GameObject.Find("TurnReadySign").GetComponent<Canvas>().enabled = true;
             nextRoom.MarkAsNext(true);
@@ -68,7 +66,7 @@ public class ResetTriggeringController : MonoBehaviour
             {
                 GameObject.Find("TurnReadySign").GetComponent<Canvas>().enabled = false;
                 rm.setControllerTriggered();
-                triggeredResetPosition = rm.currPosReal;
+                triggeredResetPosition = rm.currPos;
             }
         }
         else
@@ -86,9 +84,7 @@ public class ResetTriggeringController : MonoBehaviour
         nextRoom.MarkAsNext(false);
 
         rm.currentRoom = nextRoom;
-        Debug.Log("Change to "+ currentRoom.gameObject.name);
-
-        dirFlipper *= -1f;
+        Debug.Log("Change to "+ rm.currentRoom.gameObject.name);
     }
 
 }

@@ -9,8 +9,12 @@ public class RFL_Resetter : Resetter {
     Transform instanceHUD;
 
     Vector3 virtualCenter;
+    Vector3 userError;
+    Vector3 resetPointError;
 
     ResetTriggeringController rtc;
+
+
 
     public override bool IsResetRequired()
     {
@@ -23,6 +27,11 @@ public class RFL_Resetter : Resetter {
 
         virtualCenter = redirectionManager.trackedSpace.position; //current Plane 위치
         rtc = GameObject.Find("Redirected User").GetComponent<ResetTriggeringController>();
+
+        userError = 2 * (redirectionManager.currPos - rtc.closestResetPoint.transform.position);
+        resetPointError = 2 * (rtc.closestResetPoint.transform.position - virtualCenter) + virtualCenter
+                            - rtc.nextRoom.transform.position;
+
         SetHUD();
     }
 
@@ -32,28 +41,27 @@ public class RFL_Resetter : Resetter {
         {
             float remainingRotation = redirectionManager.deltaDir > 0 ? 180 - overallInjectedRotation : -180 - overallInjectedRotation; // The idea is that we're gonna keep going in this direction till we reach objective
             
-            if (Mathf.Abs(remainingRotation) < Mathf.Abs(redirectionManager.deltaDir))
+            if (Mathf.Abs(remainingRotation) >= Mathf.Abs(redirectionManager.deltaDir))
             {
-                InjectRotation(remainingRotation);
-                overallInjectedRotation += remainingRotation;
+                InjectRotation(redirectionManager.deltaDir);
+                float multiplier = 1f;
+                if(overallInjectedRotation != 0) multiplier = overallInjectedRotation / Mathf.Abs(overallInjectedRotation);
+                GameObject.Find("Terrain").gameObject.transform.position
+                    += multiplier * (redirectionManager.deltaDir / 180f) * (userError + resetPointError);
 
-                Room currentRoom = rtc.currentRoom;
-                Room nextRoom = rtc.nextRoom;
-                ResetPoint rp = currentRoom.connectedResetPoints[rtc.minIndex];
-                
-                Vector3 expectedVector = nextRoom.transform.position - currentRoom.transform.position;
-                Vector3 movedVector = redirectionManager.trackedSpace.position - virtualCenter;
-                Vector3 flippedVector = (rp.transform.position - currentRoom.transform.position) * 2;
-
-                GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - movedVector;   // Resetting Error Fix
-                GameObject.Find("Terrain").gameObject.transform.position -= expectedVector - flippedVector; // Reset Point Position Error Fix
-
-                redirectionManager.OnResetEnd();
+                overallInjectedRotation += redirectionManager.deltaDir;
             }
             else
             {
-                InjectRotation(redirectionManager.deltaDir);
-                overallInjectedRotation += redirectionManager.deltaDir;
+                InjectRotation(remainingRotation);
+                overallInjectedRotation += remainingRotation;
+                
+                virtualCenter = redirectionManager.trackedSpace.position;
+
+                GameObject.Find("Terrain").gameObject.transform.position
+                    += virtualCenter - rtc.nextRoom.transform.position;
+                
+                redirectionManager.OnResetEnd();
             }
         }
     }

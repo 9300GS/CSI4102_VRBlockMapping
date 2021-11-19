@@ -39,7 +39,7 @@ public class RedirectionManager : MonoBehaviour {
     [HideInInspector] public bool controllerTriggered = false;
 
 
-    [HideInInspector] public Room currentRoom;
+    public Room currentRoom;
 
 
     void Awake()
