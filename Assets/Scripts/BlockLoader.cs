@@ -42,7 +42,11 @@ public class BlockLoader : MonoBehaviour
             if(!float.TryParse(line[0], out x)) return false;
             if(!float.TryParse(line[1], out z)) return false;
 
-            if(i == 1) startingRoomPos = new Vector3(x, 0f, z);
+            if(i == 1)
+            {
+                startingRoomPos = new Vector3(x, 0f, z);
+                GameObject.Find("Terrain").gameObject.transform.position -= startingRoomPos;
+            }
             roomPos.Add(new Vector3(x, 0f, z) - startingRoomPos);
         }
 
