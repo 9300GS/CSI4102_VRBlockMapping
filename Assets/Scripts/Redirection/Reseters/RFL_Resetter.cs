@@ -14,6 +14,8 @@ public class RFL_Resetter : Resetter {
 
     ResetTriggeringController rtc;
 
+    Room nextRoom;
+
 
 
     public override bool IsResetRequired()
@@ -27,6 +29,7 @@ public class RFL_Resetter : Resetter {
 
         virtualCenter = redirectionManager.trackedSpace.position; //current Plane 위치
         rtc = GameObject.Find("Redirected User").GetComponent<ResetTriggeringController>();
+        nextRoom = rtc.nextRoom;
 
         userError = 2 * (redirectionManager.currPos - rtc.closestResetPoint.transform.position);
         resetPointError = 2 * (rtc.closestResetPoint.transform.position - virtualCenter) + virtualCenter
@@ -69,7 +72,7 @@ public class RFL_Resetter : Resetter {
     public override void FinalizeReset()
     {
         GameObject.Find("TurnAroundSign").GetComponent<Canvas>().enabled = false;
-        rtc.ChangetoNextRoom();
+        rtc.ChangetoNextRoom(nextRoom);
     }
 
     public void SetHUD()

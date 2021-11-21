@@ -2245,7 +2245,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 200}
-  m_Pivot: {x: 0.75, y: -3.8}
+  m_Pivot: {x: 0.75, y: -5}
 --- !u!114 &783112752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4835,7 +4835,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 200}
-  m_Pivot: {x: 0.75, y: -3.8}
+  m_Pivot: {x: 0.75, y: -5}
 --- !u!114 &1362968584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5253,7 +5253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1627575100}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TurnSign
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -77,13 +77,13 @@ public class ResetTriggeringController : MonoBehaviour
         
     }
 
-    public void ChangetoNextRoom()
+    public void ChangetoNextRoom(Room nextRoom_)
     {
         rm.currentRoom.MarkAsCurrent(false);
-        nextRoom.MarkAsCurrent(true);
-        nextRoom.MarkAsNext(false);
+        nextRoom_.MarkAsCurrent(true);
+        nextRoom_.MarkAsNext(false);
 
-        rm.currentRoom = nextRoom;
+        rm.currentRoom = nextRoom_;
         Debug.Log("Change to "+ rm.currentRoom.gameObject.name);
     }
 
