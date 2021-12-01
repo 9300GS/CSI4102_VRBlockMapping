@@ -33,7 +33,7 @@ public class RFL_Resetter : Resetter {
 
         userError = 2 * (redirectionManager.currPos - rtc.closestResetPoint.transform.position);
         resetPointError = 2 * (rtc.closestResetPoint.transform.position - virtualCenter) + virtualCenter
-                            - rtc.nextRoom.transform.position;
+                            - nextRoom.transform.position;
 
         SetHUD();
     }
@@ -62,7 +62,7 @@ public class RFL_Resetter : Resetter {
                 virtualCenter = redirectionManager.trackedSpace.position;
 
                 GameObject.Find("Terrain").gameObject.transform.position
-                    += virtualCenter - rtc.nextRoom.transform.position;
+                    += virtualCenter - nextRoom.transform.position;
                 
                 redirectionManager.OnResetEnd();
             }
